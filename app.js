@@ -29,6 +29,9 @@ if ('development' == app.get('env')) {
 
 app.get('/signin', routes.signin);
 app.get('/theme', routes.theme);
+app.get('/carbinet', routes.carbinet);
+app.get('/carbinet2', routes.carbinet2);
+app.get('/carbinet3', routes.carbinet3);
 app.get('/users', user.list);
 
 http.createServer(app).listen(app.get('port'), function(){

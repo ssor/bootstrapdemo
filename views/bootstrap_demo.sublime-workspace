@@ -4,8 +4,152 @@
 		"selected_items":
 		[
 			[
+				"ca",
+				"categories2"
+			],
+			[
+				"ini",
+				"init3"
+			],
+			[
+				"in",
+				"init2"
+			],
+			[
+				"col",
+				"columnChart"
+			],
+			[
+				"cont",
+				"containerRight"
+			],
+			[
+				"co",
+				"columnChart"
+			],
+			[
+				"colu",
+				"columnChart"
+			],
+			[
+				"pie",
+				"pieChart"
+			],
+			[
+				"jav",
+				"javascripts"
+			],
+			[
+				"im",
+				"image"
+			],
+			[
+				"mod",
+				"modal-detail-more"
+			],
+			[
+				"ty",
+				"typeInfo"
+			],
+			[
+				"ite",
+				"itemType"
+			],
+			[
+				"get",
+				"getTypeInfoByType"
+			],
+			[
+				"remo",
+				"removeItemByEPC"
+			],
+			[
+				"add",
+				"addItemToFloor"
+			],
+			[
+				"ke",
+				"key_inner"
+			],
+			[
+				"car",
+				"carbinetPosition"
+			],
+			[
+				"qu",
+				"itemQuantity"
+			],
+			[
+				"pos",
+				"pos"
+			],
+			[
+				"image",
+				"image"
+			],
+			[
+				"b",
+				"button"
+			],
+			[
+				"item",
+				"itemType"
+			],
+			[
+				"proto",
+				"prototype"
+			],
+			[
+				"mo",
+				"modal-detail-title"
+			],
+			[
+				"modall",
+				"myModalLabel"
+			],
+			[
+				"clo",
+				"cloure"
+			],
+			[
+				"tile_",
+				"tile_1-1"
+			],
+			[
+				"ima",
+				"image_name"
+			],
+			[
+				"imge",
+				"image_1-1"
+			],
+			[
+				"mar",
+				"margin-top"
+			],
+			[
+				"fon",
+				"font-size"
+			],
+			[
 				"ti",
-				"title"
+				"tile-title"
+			],
+			[
+				"dem",
+				"demo-tiles"
+			],
+			[
+				"t",
+				"text-align"
+			],
+			[
+				"h",
+				"h2	Tag"
+			],
+			[
+				"ba",
+				"background-color"
 			],
 			[
 				"bo",
@@ -42,14 +186,6 @@
 			[
 				"no",
 				"nodeContestTime"
-			],
-			[
-				"h",
-				"h2"
-			],
-			[
-				"cont",
-				"contest"
 			],
 			[
 				"ut",
@@ -89,18 +225,6 @@
 			],
 			[
 				"po",
-				"posts"
-			],
-			[
-				"mod",
-				"models"
-			],
-			[
-				"in",
-				"include"
-			],
-			[
-				"pos",
 				"posts"
 			],
 			[
@@ -179,7 +303,39 @@
 			"file": "/Users/ssor/Documents/program/nodejs/bootstrapdemo/app.js",
 			"settings":
 			{
-				"buffer_size": 853,
+				"buffer_size": 1007,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Users/ssor/Documents/program/nodejs/bootstrapdemo/routes/index.js",
+			"settings":
+			{
+				"buffer_size": 542,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "carbinet.ejs",
+			"settings":
+			{
+				"buffer_size": 20541,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "carbinet3.ejs",
+			"settings":
+			{
+				"buffer_size": 8643,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "carbinet2.ejs",
+			"settings":
+			{
+				"buffer_size": 8529,
 				"line_ending": "Unix"
 			}
 		},
@@ -203,15 +359,15 @@
 			"file": "theme.ejs",
 			"settings":
 			{
-				"buffer_size": 1194,
+				"buffer_size": 15498,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "/Users/ssor/Documents/program/nodejs/bootstrapdemo/routes/index.js",
+			"file": "/Users/ssor/Documents/program/nodejs/bootstrapdemo/public/stylesheets/style.css",
 			"settings":
 			{
-				"buffer_size": 203,
+				"buffer_size": 315,
 				"line_ending": "Unix"
 			}
 		},
@@ -248,6 +404,8 @@
 	},
 	"file_history":
 	[
+		"/Users/ssor/Documents/program/nodejs/bootstrapdemo/public/javascripts/main.js",
+		"/Users/ssor/Desktop/product_final_cost_company_index_viewer.html",
 		"/Users/ssor/Documents/program/nodejs/microblog/routes/user.js",
 		"/Users/ssor/Documents/program/nodejs/microblog/node_modules/user.js",
 		"/Users/ssor/Documents/program/nodejs/microblog/views/head.ejs",
@@ -279,6 +437,30 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"carbinet2",
+			"container2",
+			"testRemoveItem",
+			"carbinet",
+			"getTypeImage",
+			"item_floor2_4_type2",
+			"item_floor2_2_type1",
+			"()',",
+			"updateShowTile",
+			"image",
+			"addItem",
+			"removeItem",
+			"_type",
+			"addPos",
+			"illustration",
+			"closeDetailWindow",
+			"智能货架",
+			"large",
+			"Web",
+			"span3",
+			"h2",
+			"large",
+			"icons",
+			"signin",
 			"ajaxRefreshContests",
 			"ajaxContests",
 			"ajaxRefreshContests",
@@ -311,15 +493,15 @@
 					"file": "/Users/ssor/Documents/program/nodejs/bootstrapdemo/app.js",
 					"settings":
 					{
-						"buffer_size": 853,
+						"buffer_size": 1007,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								686,
-								686
+								821,
+								821
 							]
 						],
 						"settings":
@@ -334,23 +516,23 @@
 				},
 				{
 					"buffer": 1,
-					"file": "index.ejs",
+					"file": "/Users/ssor/Documents/program/nodejs/bootstrapdemo/routes/index.js",
 					"settings":
 					{
-						"buffer_size": 1122,
+						"buffer_size": 542,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1064,
-								1064
+								456,
+								456
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/HTML/HTML.tmLanguage"
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -360,23 +542,25 @@
 				},
 				{
 					"buffer": 2,
-					"file": "signin.ejs",
+					"file": "carbinet.ejs",
 					"settings":
 					{
-						"buffer_size": 1194,
+						"buffer_size": 20541,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								942,
-								942
+								3925,
+								3925
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/HTML/HTML.tmLanguage"
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -386,18 +570,18 @@
 				},
 				{
 					"buffer": 3,
-					"file": "theme.ejs",
+					"file": "carbinet3.ejs",
 					"settings":
 					{
-						"buffer_size": 1194,
+						"buffer_size": 8643,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								454,
+								454
 							]
 						],
 						"settings":
@@ -414,23 +598,25 @@
 				},
 				{
 					"buffer": 4,
-					"file": "/Users/ssor/Documents/program/nodejs/bootstrapdemo/routes/index.js",
+					"file": "carbinet2.ejs",
 					"settings":
 					{
-						"buffer_size": 203,
+						"buffer_size": 8529,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								203,
-								203
+								244,
+								244
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -440,6 +626,114 @@
 				},
 				{
 					"buffer": 5,
+					"file": "index.ejs",
+					"settings":
+					{
+						"buffer_size": 1122,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1003,
+								1003
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "signin.ejs",
+					"settings":
+					{
+						"buffer_size": 1194,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								396,
+								396
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "theme.ejs",
+					"settings":
+					{
+						"buffer_size": 15498,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								525,
+								525
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "/Users/ssor/Documents/program/nodejs/bootstrapdemo/public/stylesheets/style.css",
+					"settings":
+					{
+						"buffer_size": 315,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								167,
+								167
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/CSS/CSS.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 9,
 					"file": "/Users/ssor/Documents/program/nodejs/bootstrapdemo/package.json",
 					"settings":
 					{
@@ -512,7 +806,7 @@
 		[
 			[
 				"",
-				"/Users/ssor/Documents/program/nodejs/bootstrapdemo/app.js"
+				"/Users/ssor/Documents/program/nodejs/bootstrapdemo/views/theme.ejs"
 			],
 			[
 				"he",

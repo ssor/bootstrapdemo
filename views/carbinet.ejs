@@ -1,0 +1,541 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>智能货架</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Loading Bootstrap -->
+    <!-- <link href="bootstrap/css/bootstrap.css" rel="stylesheet"> -->
+    <link href="/bootstrap/css/bootstrap2.css" rel="stylesheet" media="screen">    
+
+    <!-- Loading Flat UI -->
+    <link href="/stylesheets/flat-ui.css" rel="stylesheet">
+
+    <!-- <link rel="shortcut icon" href="images/favicon.ico"> -->
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+    <![endif]-->
+    <style type="text/css">
+      .demo-tiles{
+        margin-bottom: 0px;
+      }
+      .tile{
+        padding: 9px;
+      }
+      .tile-image{
+        margin-bottom: 14px;
+      }
+      .tile-title{
+        font-size: 30px;
+      }
+      .item-quantity{
+        padding-top:2px;padding-bottom:2px;width:60%;font-size:18px;
+      }
+      ..tile-image.big-illustration{
+        margin-top: 5px;
+      }
+    </style>
+    <script type="text/javascript" src = "/javascripts/jquery.js"></script>
+    <script type="text/javascript">
+      //基础操作：
+      //1. 图片的修改
+      //2. 数字的修改
+      //3. 模式窗口
+      //4. 显示各个种类的数量，当点击时，对该类信息进行介绍
+
+      var PositionsList = new Array();
+      var tileList = new Array();
+      var typeImageMap = [
+                          {itemType:'01', image:'Chat@2x.png', des:'你喜欢和我聊天吗？',title: '聊天'}, 
+                          {itemType:'null', image:'Compas@2x.png', des:'这个位置没有放置任何东西！', title:'空白'}, 
+                          {itemType:'02', image:'Pensils@2x.png', des:'我们可以卖大量的铅笔给你，你需要多少呢？', title:'铅笔'}];
+
+
+      function getTypeInfoByType(_type){
+        for(var key in typeImageMap){
+          if(typeImageMap[key].itemType == _type){
+            return typeImageMap[key];
+          }
+        }
+        return null;        
+      }
+
+      function carbinetItem(_epc, _itemType){
+        this.epc = _epc;
+        this.itemType = _itemType;
+      }
+      
+      function Tile(_image, _button){
+        this.image = _image;
+        this.button = _button;
+      }
+      //货架上的不同位置的定义，包括该位置的坐标属性，当前存放的物品类型及其数量，并包含了物品的列表
+      function carbinetPosition(x, y){
+        this.yfloor = y;
+        this.xindex = x;
+        this.itemType = null;
+        this.itemQuantity = 0;
+        this.itemList = new Array();
+        this.Tile = null;
+      }
+      carbinetPosition.prototype.addItem = function(_item) {
+          if(_item == null) return false;
+          if(this.itemType != null && _item.itemType != this.itemType) return false;
+
+          this.itemList.push(_item);
+          if(this.itemQuantity <= 0){
+            this.itemType = _item.itemType;
+          }
+          this.itemQuantity ++;
+          return true;
+      };
+      carbinetPosition.prototype.removeItem = function(_epc){
+          var itemIndex = -1;
+          for(var key in this.itemList){
+            if(this.itemList[key].epc == _epc){
+              itemIndex = key;
+              break;
+            }
+          }
+
+          if(itemIndex >= 0){
+            this.itemList.splice(itemIndex, 1);
+            this.itemQuantity--;
+
+            if(this.itemQuantity <= 0){
+              this.itemType = null;
+            }
+            return true;
+          }else{
+            return false;
+          }
+      };
+
+      carbinetPosition.prototype.updateShowTile = function(){
+        if(this.Tile != null){
+          this.Tile.button.html(this.itemQuantity);
+          if(this.itemType == null){
+              var map = getTypeInfoByType('null');
+              if(null != map){
+                this.Tile.image.attr('src', '/images/'+map.image);
+              }
+          }else{
+            var map = getTypeInfoByType(this.itemType);
+            if(null != map){
+              this.Tile.image.attr('src', '/images/'+ map.image);
+            }
+          }
+        }
+      };
+
+      function init(){
+        for (var i = 1; i <= 4; i++) {
+          for(var index = 1; index <= 4; index++){
+            var pos = new carbinetPosition(i,index);
+            PositionsList.push(pos);
+          }
+        };
+      }
+
+      $(document).ready(function(){
+
+          init();
+          // $('#btn_1-1').html('40');
+          // $('#image_1-1').attr('src', '/images/Pensils@2x.png');
+          $('#myModal').click(function(){
+              closeDetailWindow();
+          });
+
+          var floor;
+          var index;
+          for(floor = 1; floor <= 4; floor++){
+            for(index = 1; index <=4; index++){
+
+                (function(){
+                    var y=floor;
+                    var x = index;
+                    var button = $('#btn_'+y+'-'+x);
+                    var image = $('#image_'+y+'-'+x);
+
+                    image.click(function(){
+                      var pos = findPosByXY(x, y);
+                      var typeInfo;
+                      if(pos.itemType == null){
+                        typeInfo = getTypeInfoByType('null')
+                      }else{
+                        typeInfo = getTypeInfoByType(pos.itemType)
+                      }
+                      $('#modal-detail-title').html(typeInfo.title);
+                      $('#modal-detail-more').html(typeInfo.des);
+                      openDetailWindow();
+                    });
+                    var tile = new Tile(image, button);
+                    var pos = findPosByXY(x, y);
+                    if(pos != null){
+                      pos.Tile = tile;
+                    }
+                    tileList.push(tile);
+
+                })(floor, index);
+            }
+          }
+          // setInterval('testAddSomeItem()', 5000);
+          setTimeout('testRemoveItem()', 10000);
+          testAddSomeItem();
+      });
+      function testAddSomeItem(){
+        var item_floor1_1_type1 = new carbinetItem('0101', '01');
+        addItemToFloor(1, item_floor1_1_type1);
+        var item_floor1_2_type1 = new carbinetItem('0102', '01');
+        addItemToFloor(1, item_floor1_2_type1);
+
+        var item_floor2_0103_type1 = new carbinetItem('0103', '01');
+        addItemToFloor(2, item_floor2_0103_type1);
+        // var pos = PositionsList[0];
+        // if(pos.itemQuantity <= 0){
+
+        //   pos.addItem(new carbinetItem('0101', '01'));
+        //   pos.addItem(new carbinetItem('0102', '01'));
+        //   pos.addItem(new carbinetItem('0103', '01'));
+        //   pos.addItem(new carbinetItem('0104', '02'));
+        // }
+        // else{
+        //   pos.removeItem('0101');
+        //   pos.removeItem('0102');
+        //   pos.removeItem('0103');
+        // }
+
+        updateShowTile();
+      }
+      function testRemoveItem(){
+        removeItemByEPC('0103');
+        removeItemByEPC('0101');
+
+        var item_floor2_0104_type2 = new carbinetItem('0104', '02');
+        addItemToFloor(2, item_floor2_0104_type2);
+
+        updateShowTile();
+      }
+
+      function addItemToFloor(_floor, _item){
+        for(var key in PositionsList){
+          var pos = PositionsList[key];
+          if(pos.yfloor == _floor){//放到指定的层
+              if(pos.itemType == null || (pos.itemType != null && pos.itemType == _item.itemType)){
+
+                //找到合适的位置了
+                return pos.addItem(_item);
+              }
+          }
+        }
+      }
+      function removeItemByEPC(_epc){
+        for(var key in PositionsList){
+          var pos = PositionsList[key];
+          if(pos.removeItem(_epc)){
+            break;
+          }
+        }
+      }
+
+      function updateShowTile(_position){
+        for(var key in PositionsList){
+          PositionsList[key].updateShowTile();
+        }
+      }
+      function findPosByXY(_x, _y){
+        for(var key in PositionsList){
+          if(PositionsList[key].xindex == _x && PositionsList[key].yfloor == _y){
+            return PositionsList[key];
+          }
+        }
+        return null;
+      }
+
+      function openDetailWindow(){
+        $('#myModal').modal('show');
+      }
+      function closeDetailWindow(){
+        $('#myModal').modal('hide');
+
+      }
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <!-- <div class="demo-headline"> -->
+        <!-- <h1 class="demo-logo"> -->
+          <!-- <div class="logo"></div> -->
+          <!-- Flat UI -->
+          <!-- <small>Free Web User Interface Kit</small> -->
+        <!-- </h1> -->
+      <!-- </div> /demo-headline -->
+      <h3 class="demo-panel-title" style="text-align:center;font-size:35px;">智能货架</h3>
+
+      <div class="row demo-tiles">
+        <div class="span2"></div>
+        <div class="span2">
+          <div class="tile" id = "tile_1-1">
+            <img id="image_1-1" src="/images/Compas@2x.png" alt="Compas@2x" class="tile-image">
+            <!-- <h3 class="tile-title">1</h3> -->
+            <!-- <p>100% convertable to HTML/CSS layout.</p> -->
+            <!-- <div></div> -->
+            <a id = "btn_1-1" class="btn btn-info btn-xs item-quantity" style="" href="#">0</a>
+          </div>
+        </div>
+<!-- data-toggle="modal" data-target="#myModal" -->
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button> -->
+        <h2 class="modal-title" id="myModalLabel" style="text-align: center;">介绍</h2>
+      </div>
+      <div class="modal-body">
+          <div style="text-align: center;">
+            <img src="/images/Pensils@2x.png" alt="Pensils@2x" class="tile-image">
+            <div>
+              <h1 id="modal-detail-title">铅笔</h1>
+              <p id="modal-detail-more">这是一个铅笔的图标</p>
+            </div>
+          </div>
+        
+      </div>
+      <div class="modal-footer">
+        <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
+        <!-- <button type="button" class="btn btn-primary" onclick="closeDetailWindow()">关 闭</button> -->
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+        <div class="span2">
+          <div class="tile" id = "tile_1-2">
+            <img id="image_1-2" src="/images/Infinity-Loop@2x.png" alt="Infinity-Loop@2x" class="tile-image">
+            <!-- <h3 class="tile-title">2</h3> -->
+            <!-- <p>Vector-based shapes and minimum of layer styles.</p> -->
+            <!-- <a class="btn btn-primary btn-small btn-block" href="http://designmodo.com/flat">Get Pro</a> -->
+            <a id = "btn_1-2" class="btn btn-info btn-xs item-quantity" style="" href="#">2</a>
+          </div>
+        </div>
+
+        <div class="span2">
+          <div class="tile">
+            <img id="image_1-3" src="/images/Pensils@2x.png" alt="Pensils@2x" class="tile-image">
+            <!-- <h3 class="tile-title">1</h3> -->
+            <!-- <p>Easy to add or change elements. </p> -->
+            <!-- <a class="btn btn-primary btn-small btn-block" href="http://designmodo.com/flat">Get Pro</a> -->
+            <a id = "btn_1-3" class="btn btn-info btn-xs item-quantity" style="" href="#">2</a>
+          </div>
+        </div>
+
+        <div class="span2">
+          <div class="tile tile-hot">
+            <img id="image_1-4" src="/images/Chat@2x.png" alt="Chat@2x" class="tile-image">
+            <!-- <h3 class="tile-title">3</h3> -->
+            <!-- <p>Your likes, shares and comments helps us.</p> -->
+            <!-- <a class="btn btn-primary btn-small btn-block" href="http://designmodo.com/flat">Get Pro</a> -->
+            <a id = "btn_1-4" class="btn btn-info btn-xs item-quantity" style="" href="#">2</a>
+          </div>
+        <div class="span2"></div>
+
+        </div>
+      </div> <!-- /tiles -->
+
+      <!-- the gap -->
+      <div class="row">
+        <div class="span1"></div>
+        <div class="span10">
+            <a class="btn" style="width:100%;margin-bottom:10px;padding-bottom:4px;" href="#"></a>
+        </div>
+        <div class="span1"></div>
+      </div>
+      <!-- the second floor -->
+      <div class="row demo-tiles">
+        <div class="span2"></div>
+        <div class="span2">
+          <div class="tile">
+            <img id="image_2-1" src="/images/Compas@2x.png" alt="Compas@2x" class="tile-image">
+            <!-- <h3 class="tile-title">1</h3> -->
+            <!-- <p>100% convertable to HTML/CSS layout.</p> -->
+            <!-- <a class="btn btn-primary btn-small btn-block" href="http://designmodo.com/flat">Get Pro</a> -->
+            <a id = "btn_2-1" class="btn btn-info btn-xs item-quantity" style="" href="#">2</a>
+          </div>
+        </div>
+
+        <div class="span2">
+          <div class="tile">
+            <img id="image_2-2" src="/images/Infinity-Loop@2x.png" alt="Infinity-Loop@2x" class="tile-image">
+            <!-- <h3 class="tile-title">4</h3> -->
+            <!-- <p>Vector-based shapes and minimum of layer styles.</p> -->
+            <!-- <a class="btn btn-primary btn-large btn-block" href="http://designmodo.com/flat">Get Pro</a> -->
+            <a id = "btn_2-2" class="btn btn-info btn-xs item-quantity" style="" href="#">2</a>
+          </div>
+        </div>
+
+        <div class="span2">
+          <div class="tile">
+            <img id="image_2-3" src="/images/Pensils@2x.png" alt="Pensils@2x" class="tile-image">
+            <!-- <h3 class="tile-title">3</h3> -->
+            <!-- <p>Easy to add or change elements. </p> -->
+            <!-- <a class="btn btn-primary btn-large btn-block" href="http://designmodo.com/flat">Get Pro</a> -->
+            <a id = "btn_2-3" class="btn btn-info btn-xs item-quantity" style="" href="#">2</a>
+          </div>
+        </div>
+
+        <div class="span2">
+          <div class="tile tile-hot">
+            <img id="image_2-4" src="/images/Chat@2x.png" alt="Chat@2x" class="tile-image">
+            <!-- <h3 class="tile-title">1</h3> -->
+            <!-- <p>Your likes, shares and comments helps us.</p> -->
+            <!-- <a class="btn btn-primary btn-large btn-block" href="http://designmodo.com/flat">Get Pro</a> -->
+            <a id = "btn_2-4" class="btn btn-info btn-xs item-quantity" style="" href="#">2</a>
+          </div>
+        <div class="span2"></div>
+
+        </div>
+      </div> <!-- /tiles -->
+        
+      <!-- the third floor -->
+      <div class="row">
+        <div class="span1"></div>
+        <div class="span10">
+            <a class="btn" style="width:100%;margin-bottom:10px;padding-bottom:4px;" href="#"></a>
+        </div>
+        <div class="span1"></div>
+      </div>
+
+      <div class="row demo-tiles">
+        <div class="span2"></div>
+        <div class="span2">
+          <div class="tile">
+            <img id="image_3-1" src="/images/Compas@2x.png" alt="Compas@2x" class="tile-image">
+            <!-- <h3 class="tile-title">2</h3> -->
+            <!-- <p>100% convertable to HTML/CSS layout.</p> -->
+            <!-- <a class="btn btn-primary btn-large btn-block" href="http://designmodo.com/flat">Get Pro</a> -->
+            <a id = "btn_3-1" class="btn btn-info btn-xs item-quantity" style="" href="#">2</a>
+          </div>
+        </div>
+
+        <div class="span2">
+          <div class="tile">
+            <img id="image_3-2" src="/images/Infinity-Loop@2x.png" alt="Infinity-Loop@2x" class="tile-image">
+            <!-- <h3 class="tile-title">3</h3> -->
+            <!-- <p>Vector-based shapes and minimum of layer styles.</p> -->
+            <!-- <a class="btn btn-primary btn-large btn-block" href="http://designmodo.com/flat">Get Pro</a> -->
+            <a id = "btn_3-2" class="btn btn-info btn-xs item-quantity" style="" href="#">2</a>
+          </div>
+        </div>
+
+        <div class="span2">
+          <div class="tile">
+            <img id="image_3-3" src="/images/Pensils@2x.png" alt="Pensils@2x" class="tile-image">
+            <!-- <h3 class="tile-title">5</h3> -->
+            <!-- <p>Easy to add or change elements. </p> -->
+            <!-- <a class="btn btn-primary btn-large btn-block" href="http://designmodo.com/flat">Get Pro</a> -->
+            <a id = "btn_3-3" class="btn btn-info btn-xs item-quantity" style="" href="#">2</a>
+          </div>
+        </div>
+
+        <div class="span2">
+          <div class="tile tile-hot">
+            <img id="image_3-4" src="/images/Chat@2x.png" alt="Chat@2x" class="tile-image">
+            <!-- <h3 class="tile-title">3</h3> -->
+            <!-- <p>Your likes, shares and comments helps us.</p> -->
+            <!-- <a class="btn btn-primary btn-large btn-block" href="http://designmodo.com/flat">Get Pro</a> -->
+            <a id = "btn_3-4" class="btn btn-info btn-xs item-quantity" style="" href="#">2</a>
+          </div>
+        <div class="span2"></div>
+
+        </div>
+      </div> <!-- /tiles -->
+
+      <div class="row">
+        <div class="span1"></div>
+        <div class="span10">
+            <a class="btn" style="width:100%;margin-bottom:10px;padding-bottom:4px;" href="#"></a>
+        </div>
+        <div class="span1"></div>
+      </div>
+
+
+      <!-- the forth floor -->
+      <div class="row demo-tiles">
+        <div class="span2"></div>
+        <div class="span2">
+          <div class="tile">
+            <img id="image_4-1" src="/images/Compas@2x.png" alt="Compas@2x" class="tile-image">
+            <!-- <h3 class="tile-title">2</h3> -->
+            <!-- <p>100% convertable to HTML/CSS layout.</p> -->
+            <!-- <a class="btn btn-primary btn-large btn-block" href="http://designmodo.com/flat">Get Pro</a> -->
+            <a id = "btn_4-1" class="btn btn-info btn-xs item-quantity" style="" href="#">2</a>
+          </div>
+        </div>
+
+        <div class="span2">
+          <div class="tile">
+            <img id="image_4-2" src="/images/Infinity-Loop@2x.png" alt="Infinity-Loop@2x" class="tile-image">
+            <!-- <h3 class="tile-title">2</h3> -->
+            <!-- <p>Vector-based shapes and minimum of layer styles.</p> -->
+            <!-- <a class="btn btn-primary btn-large btn-block" href="http://designmodo.com/flat">Get Pro</a> -->
+            <a id = "btn_4-2" class="btn btn-info btn-xs item-quantity" style="" href="#">2</a>
+          </div>
+        </div>
+
+        <div class="span2">
+          <div class="tile">
+            <img id="image_4-3" src="/images/Pensils@2x.png" alt="Pensils@2x" class="tile-image">
+            <!-- <h3 class="tile-title">1</h3> -->
+            <!-- <p>Easy to add or change elements. </p> -->
+            <!-- <a class="btn btn-primary btn-large btn-block" href="http://designmodo.com/flat">Get Pro</a> -->
+            <a id = "btn_4-3"  class="btn btn-info btn-xs item-quantity" style="" href="#">2</a>
+          </div>
+        </div>
+
+        <div class="span2">
+          <div class="tile tile-hot">
+            <img id="image_4-4" src="/images/Chat@2x.png" alt="Chat@2x" class="tile-image">
+            <!-- <h3 class="tile-title">2</h3> -->
+            <!-- <p>Your likes, shares and comments helps us.</p> -->
+            <!-- <a class="btn btn-primary btn-large btn-block" href="http://designmodo.com/flat">Get Pro</a> -->
+            <a id = "btn_4-4" class="btn btn-info btn-xs item-quantity" style="" href="#">2</a>
+          </div>
+        <div class="span2"></div>
+
+        </div>
+      </div> <!-- /tiles -->
+        
+      <div class="row">
+        <div class="span1"></div>
+        <div class="span10">
+            <a class="btn" style="width:100%;margin-bottom:10px;padding-bottom:4px;" href="#"></a>
+        </div>
+        <div class="span1"></div>
+      </div>
+    </div> <!-- /container -->
+
+    <footer>
+    </footer>
+    
+    <!-- Load JS here for greater good =============================-->
+    <!-- // <script src="js/jquery-ui-1.10.3.custom.min.js"></script> -->
+    <!-- // <script src="js/jquery.ui.touch-punch.min.js"></script> -->
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
+    <!-- // <script src="js/bootstrap-select.js"></script> -->
+    <!-- // <script src="js/bootstrap-switch.js"></script> -->
+    <!-- // <script src="js/flatui-checkbox.js"></script> -->
+    <!-- // <script src="js/flatui-radio.js"></script> -->
+    <!-- // <script src="js/jquery.tagsinput.js"></script> -->
+    <!-- // <script src="js/jquery.placeholder.js"></script> -->
+    <!-- // <script src="js/jquery.stacktable.js"></script> -->
+    <!-- // <script src="http://vjs.zencdn.net/c/video.js"></script> -->
+    <!-- // <script src="js/application.js"></script> -->
+  </body>
+</html>
